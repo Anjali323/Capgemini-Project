@@ -23,7 +23,7 @@ public class Customer{
 	
 	@NotNull(message="The value should not be null")
 	@Length(min=2,max=120)
-	@Pattern(regexp="/^[A-Za-z]+$/",message="Should be only characters")
+	@Pattern(regexp="^[A-Za-z]*$",message="Should be only characters")
 	@Column(name="customer_name")
 	private String customerName;
 	
@@ -45,26 +45,28 @@ public class Customer{
 	
 	@NotNull(message="The value should not be null")
 	@NotBlank
-	@Pattern(regexp="/^[A-Za-z]+$/",message="Should be only characters")
+	@Pattern(regexp="^[A-Za-z]*$",message="Should be only characters")
 	@Column(name="gender")
 	private String gender;
 	
 	@NotNull(message="The value should not be null")
 	@NotBlank
-	@Pattern(regexp="/^[A-Za-z]+$/",message="Should be only characters")
+	@Pattern(regexp="^[A-Za-z]*$",message="Should be only characters")
 	@Column(name="nationality")
 	private String nationality;
 	
 	@Id
 	@NotNull(message="The value should not be null")
 	@NotBlank
-	@Pattern(regexp="(^$|[0-9]{10})",message="Please Enter Numerical digits only")
+	@Length(min=12,max=12)
+	@Pattern(regexp="[0-9]+",message="Please Enter Numerical digits only")
 	@Column(name="aadhar_number",unique=true)
 	private String aadharNumber;
 	
 	@NotNull(message="The value should not be null")
 	@NotBlank
-	@Pattern(regexp="/[^A-Z0-9]/",message="Please Enter Numerical digits only")
+	@Length(min=10,max=10)
+	@Pattern(regexp="^[A-Z0-9]*$",message="Please Enter Numerical digits only")
 	@Column(name="pan_number",unique=true)
 	private String panNumber;
 	

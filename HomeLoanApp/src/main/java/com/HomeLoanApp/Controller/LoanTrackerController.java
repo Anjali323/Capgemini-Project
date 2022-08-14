@@ -1,5 +1,7 @@
 package com.HomeLoanApp.Controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -7,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.HomeLoanApp.Exception.EmptyInputException;
+import com.HomeLoanApp.Model.LoanApplication;
 import com.HomeLoanApp.Model.Status;
 import com.HomeLoanApp.Service.LoanApplicationServiceImpl;
 import com.HomeLoanApp.Service.UserServiceImpl;
@@ -27,5 +30,13 @@ public class LoanTrackerController {
 			return las.retrieveLoanApplicationById(applicationId).getStatus();
 		}
 		throw new EmptyInputException("202","user Id doesn't exist");
+	}
+	
+	@GetMapping("track/{userId}")
+	public List<LoanApplication> getAllLoanStatus(@PathVariable("userId") int userId){
+		if(usi.findUserWithId(userId).getRole().equalsIgnoreCase("customer")) {
+			return las.getAllLoanApplicationWithCustId(userId);
+		}
+		throw new EmptyInputException("230","This feature is only accessible for Customer only");
 	}
 }

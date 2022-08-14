@@ -19,18 +19,23 @@ public class Emi {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="emi_id")
 	private Long emiId;
+	
 	@NotNull
 	@Column(name="due_date",nullable=false)
 	private LocalDate dueDate;
+	
 	@NotNull
 	@Column(name="emi_amount",nullable=false)
 	private double emiAmount;
+	
 	@NotNull
 	@Column(name="loan_amount",nullable=false)
 	private double loanAmount;
+	
 	@NotNull
 	@Column(name="interest_amount",nullable=false)
 	private double interestAmount;
+	
 	@OneToOne
 	private LoanAgreement loanAgreement;
 	

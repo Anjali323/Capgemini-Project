@@ -1,6 +1,7 @@
 package com.HomeLoanApp.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -115,7 +116,7 @@ public class LoanAgreementServiceImpl implements ILoanAgreementService{
 	
 	@Override
 	public LoanAgreement getLoanAgreementWithApplicationId(long loanApplicationId) {
-		List<LoanAgreement> l1=retrieveAllLoanAgreement().stream().filter(agreement->agreement.getLoanApplication().getApplicationId()==loanApplicationId).toList();
+		List<LoanAgreement> l1=retrieveAllLoanAgreement().stream().filter(agreement->agreement.getLoanApplication().getApplicationId()==loanApplicationId).collect(Collectors.toList());
 		if(!l1.isEmpty()) {
 			return l1.get(0);
 		}

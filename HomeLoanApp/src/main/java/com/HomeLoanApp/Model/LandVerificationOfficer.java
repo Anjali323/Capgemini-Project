@@ -19,7 +19,7 @@ public class LandVerificationOfficer{
 	
 	@NotNull(message="The value should not be null")
 	@Length(min=2,max=120)
-	@Pattern(regexp="/^[A-Za-z]+$/",message="Should be only characters")
+	@Pattern(regexp="^[A-Za-z]*$",message="Should be only characters")
 	@Column(name="officer_name")
 	private String officerName;
 	

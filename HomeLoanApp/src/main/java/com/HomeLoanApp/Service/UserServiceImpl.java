@@ -1,6 +1,7 @@
 package com.HomeLoanApp.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -58,7 +59,7 @@ public class UserServiceImpl implements IUserService{
 
 	@Override
 	public void deleteUser(int userId) {
-		User u=ur.findAll().stream().filter(user->user.getUserId()==userId).toList().get(0);
+		User u=ur.findAll().stream().filter(user->user.getUserId()==userId).collect(Collectors.toList()).get(0);
 		if(u!=null) {
 			ur.delete(u);
 			return;

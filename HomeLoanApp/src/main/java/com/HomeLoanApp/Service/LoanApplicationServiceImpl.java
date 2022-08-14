@@ -1,6 +1,9 @@
 package com.HomeLoanApp.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
 import com.HomeLoanApp.Model.Status;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,6 +17,9 @@ public class LoanApplicationServiceImpl implements ILoanApplicationService{
 	
 	@Autowired
 	private ILoanApplicationRepository ilr;
+	
+	@Autowired
+	private CustomerServiceImpl csi;
 
 	@Override
 	public LoanApplication deleteLoanApplicationById(long loanApplicationId) {
@@ -107,5 +113,11 @@ public class LoanApplicationServiceImpl implements ILoanApplicationService{
 			}
 		}
 		return null;
+	}
+	
+	public List<LoanApplication> getAllLoanApplicationWithCustId(int custId) {
+		List<LoanApplication> l1=retrieveAllLoanApplications();
+		csi.viewCustomer(custId);
+		return l1.stream().filter(application->application.getCustomerId()==custId).collect(Collectors.toList());
 	}
 }

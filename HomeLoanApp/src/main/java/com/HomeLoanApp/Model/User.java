@@ -10,6 +10,8 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
+import org.hibernate.validator.constraints.Length;
+
 @Entity
 @Table(name="userdata")
 public class User {
@@ -21,12 +23,13 @@ public class User {
 	
 	@NotNull(message="The value should not be null")
 	@NotBlank
+	@Length(min=6,max=16)
 	@Column(name="password")
 	private String password;
 	
 	@NotNull(message="The value should not be null")
 	@NotBlank
-	@Pattern(regexp="/^[A-Za-z]+$/",message="Should be only characters")
+	@Pattern(regexp="^[A-Za-z]*$",message="Should be only characters")
 	@Column(name="role")
 	private String role;
 	
