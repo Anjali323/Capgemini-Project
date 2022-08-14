@@ -7,6 +7,12 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+
+import org.hibernate.validator.constraints.Length;
 
 @Entity
 @Table(name="customerdata")
@@ -14,22 +20,52 @@ public class Customer{
 	
 	@OneToOne
 	private User user;
+	
+	@NotNull(message="The value should not be null")
+	@Length(min=2,max=120)
+	@Pattern(regexp="/^[A-Za-z]+$/",message="Should be only characters")
 	@Column(name="customer_name")
 	private String customerName;
-	@Column(name="mobile_number")
+	
+	@NotNull(message="The value should not be null")
+	@Length(min=10,max=10,message="The Length should be exactly 10 digits")
+	@Pattern(regexp="(^$|[0-9]{10})",message="Please Enter Numerical digits only")
+	@Column(name="mobile_number",unique=true)
 	private String mobileNumber;
-	@Column(name="email_id")
+	
+	@NotNull(message="The value should not be null")
+	@NotBlank(message="Email should not be blank")
+	@Email(message="Should be in a Correct Format e.g.(abc@xyz.com)",regexp="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$")
+	@Column(name="email_id",unique=true,length=120)
 	private String emailId;
+	
+	@NotNull(message="The value should not be null")
 	@Column(name="date_of_birth")
 	private LocalDate dateOfBirth;
+	
+	@NotNull(message="The value should not be null")
+	@NotBlank
+	@Pattern(regexp="/^[A-Za-z]+$/",message="Should be only characters")
 	@Column(name="gender")
 	private String gender;
+	
+	@NotNull(message="The value should not be null")
+	@NotBlank
+	@Pattern(regexp="/^[A-Za-z]+$/",message="Should be only characters")
 	@Column(name="nationality")
 	private String nationality;
+	
 	@Id
-	@Column(name="aadhar_number")
+	@NotNull(message="The value should not be null")
+	@NotBlank
+	@Pattern(regexp="(^$|[0-9]{10})",message="Please Enter Numerical digits only")
+	@Column(name="aadhar_number",unique=true)
 	private String aadharNumber;
-	@Column(name="pan_number")
+	
+	@NotNull(message="The value should not be null")
+	@NotBlank
+	@Pattern(regexp="/[^A-Z0-9]/",message="Please Enter Numerical digits only")
+	@Column(name="pan_number",unique=true)
 	private String panNumber;
 	
 	public String getCustomerName() {

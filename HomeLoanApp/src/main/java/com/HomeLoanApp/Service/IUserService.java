@@ -1,7 +1,5 @@
 package com.HomeLoanApp.Service;
 
-import java.util.List;
-
 import com.HomeLoanApp.Model.User;
 
 public interface IUserService {
@@ -9,5 +7,5 @@ public interface IUserService {
 	public User signIn(User user);
 	public User signOut(User user);
 	public User findUserWithId(int userId);
-	public List<User> findAllUsers();
+	public void deleteUser(int userId);
 }

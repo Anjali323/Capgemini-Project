@@ -46,6 +46,10 @@ public class CustomerServiceImpl implements ICustomerService{
 			if(c.getUser().getUserId()==customer.getUser().getUserId()) {
 				throw new EmptyInputException("210","Customer already exists");
 			}
+			
+			if(c.getAadharNumber().equals(customer.getAadharNumber())||c.getPanNumber().equals(customer.getPanNumber())||c.getMobileNumber().equals(customer.getMobileNumber())||c.getEmailId().equals(customer.getEmailId())) {
+				throw new EmptyInputException("226","Aadhar or Pancard number or E-mail or Contact number is already belongs to other user");
+			}
 		}
 		return icr.save(customer);
 	}
@@ -57,13 +61,19 @@ public class CustomerServiceImpl implements ICustomerService{
 		}
 		
 		List<Customer> l1=viewAllCustomers();
-		
+		int id=0;
 		for(Customer c:l1) {
+			if((c.getAadharNumber().equals(customer.getAadharNumber())||c.getPanNumber().equals(customer.getPanNumber())||c.getMobileNumber().equals(customer.getMobileNumber()))&&c.getUser().getUserId()!=customer.getUser().getUserId()||c.getEmailId().equals(customer.getEmailId())) {
+				throw new EmptyInputException("226","Aadhar or Pancard number or contact number is already belongs to other user");
+			}
 			if(c.getUser().getUserId()==customer.getUser().getUserId()) {
-				return icr.save(customer);
+				id=c.getUser().getUserId();
 			}
 		}
-		throw new EmptyInputException("209","Loan Application doesn't exist");
+		if(id!=0) {
+			return icr.save(customer);
+		}
+		throw new EmptyInputException("210","Customer already exists");
 	}
 
 	@Override
@@ -71,11 +81,11 @@ public class CustomerServiceImpl implements ICustomerService{
 		List<Customer> l1=viewAllCustomers();
 		for(Customer c:l1) {
 			if(c.getUser().getUserId()==customer.getUser().getUserId()) {
-				icr.deleteById(customer.getUser().getUserId());
+				icr.deleteById(customer.getAadharNumber());
 				return null;
 			}
 		}
-		throw new EmptyInputException("209","Loan Application doesn't exist");
+		throw new EmptyInputException("210","Customer already exists");
 	}
 
 	@Override

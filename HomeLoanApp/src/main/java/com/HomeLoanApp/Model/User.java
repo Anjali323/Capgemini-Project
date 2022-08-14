@@ -6,6 +6,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 @Entity
 @Table(name="userdata")
@@ -15,8 +18,15 @@ public class User {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="user_id")
 	private int userId;
+	
+	@NotNull(message="The value should not be null")
+	@NotBlank
 	@Column(name="password")
 	private String password;
+	
+	@NotNull(message="The value should not be null")
+	@NotBlank
+	@Pattern(regexp="/^[A-Za-z]+$/",message="Should be only characters")
 	@Column(name="role")
 	private String role;
 	

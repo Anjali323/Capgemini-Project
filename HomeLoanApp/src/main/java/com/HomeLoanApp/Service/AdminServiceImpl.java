@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import com.HomeLoanApp.Exception.EmptyInputException;
 import com.HomeLoanApp.Model.Admin;
-import com.HomeLoanApp.Model.LoanApplication;
 import com.HomeLoanApp.dao.IAdminRepository;
 
 @Service
@@ -36,12 +35,6 @@ public class AdminServiceImpl implements IAdminService{
 	@Override
 	public List<Admin> getAllAdmin(){
 		return iar.findAll();
-	}
-
-	@Override
-	public List<LoanApplication> viewAllPendingApprovals() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 	
 }

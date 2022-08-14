@@ -1,13 +1,15 @@
 package com.HomeLoanApp.Model;
 
 import java.time.LocalDate;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name="loanapplication")
@@ -17,28 +19,42 @@ public class LoanApplication{
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="application_id")
 	private long applicationId;
+	
+	@NotNull(message="The value should not be null")
 	@Column(name="application_date")
 	private LocalDate applicationDate;
+	
+	@DecimalMin(value = "45000")
+	@NotNull(message="The value should not be null")
 	@Column(name="loan_applied_amount")
 	private double loanAppliedAmount;
+	
+	@DecimalMin(value = "45000")
+	@NotNull(message="The value should not be null")
 	@Column(name="loan_approved_amount")
 	private double loanApprovedAmount;
+	
 	@Column(name="land_verification_approval")
 	private boolean landVerificationApproval;
+	
 	@Column(name="finance_verification_approval")
 	private boolean financeVerificationApproval;
+	
 	@Column(name="admin_approval")
 	private boolean adminApproval;
+	
+	@NotNull(message="The value should not be null")
 	@Column(name="status")
 	private Status status;
-	@OneToOne
-	private Customer customer;
 	
-	public Customer getCustomer() {
-		return customer;
+	@Column(name="customer_id")
+	private int customerId;
+	
+	public int getCustomerId() {
+		return customerId;
 	}
-	public void setCustomer(Customer customer) {
-		this.customer = customer;
+	public void setCustomerId(int customerId) {
+		this.customerId = customerId;
 	}
 	public long getApplicationId() {
 		return applicationId;
@@ -95,7 +111,7 @@ public class LoanApplication{
 				+ ", loanAppliedAmount=" + loanAppliedAmount + ", loanApprovedAmount=" + loanApprovedAmount
 				+ ", landVerificationApproval=" + landVerificationApproval + ", financeVerificationApproval="
 				+ financeVerificationApproval + ", adminApproval=" + adminApproval + ", status=" + status
-				+ ", customer=" + customer + "]";
+				+ ", customerId=" + customerId + "]";
 	}
 	
 }

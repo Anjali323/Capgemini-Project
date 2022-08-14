@@ -53,14 +53,17 @@ public class UserServiceImpl implements IUserService{
 			}
 		}
 		
-		throw new EmptyInputException("200","user Id doesn't exist");
+		throw new EmptyInputException("202","user Id doesn't exist");
 	}
 
 	@Override
-	public List<User> findAllUsers() {
-		// TODO Auto-generated method stub
-		return ur.findAll();
+	public void deleteUser(int userId) {
+		User u=ur.findAll().stream().filter(user->user.getUserId()==userId).toList().get(0);
+		if(u!=null) {
+			ur.delete(u);
+			return;
+		}
+		throw new EmptyInputException("202","user Id doesn't exist");
 	}
-	
 	
 }

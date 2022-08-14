@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.HomeLoanApp.Exception.EmptyInputException;
 import com.HomeLoanApp.Model.LandVerificationOfficer;
 import com.HomeLoanApp.Model.LoanApplication;
+import com.HomeLoanApp.Model.Status;
 import com.HomeLoanApp.dao.ILandVerificationRepository;
 
 
@@ -45,20 +46,21 @@ public class LandVerificationOfficerServiceImpl implements ILandVerificationOffi
 
 	@Override
 	public void updateStatus(LoanApplication loanApplication) {
-		List<LoanApplication> l1=las.retriveAllLoanApplications();
+		List<LoanApplication> l1=las.retrieveAllLoanApplications();
 		
 		for(LoanApplication l:l1) {
 			if(l.getApplicationId()==loanApplication.getApplicationId()) {
-				loanApplication.setLandVerificationApproval(true);
-				loanApplication.setCustomer(l.getCustomer());
+				loanApplication.setStatus(Status.WAITING_FOR_FINANCE_APPROVAL);
 				las.updateLoanApplication(loanApplication);
+				return;
 			}
 		}
+		throw new EmptyInputException("206","Loan Application doesn't exist");
 	}
 
 	@Override
 	public List<LoanApplication> getLoanApplicationByStatus() {
-		return las.retriveAllLoanApplications().stream().filter(loanApp->loanApp.isLandVerificationApproval()==false).collect(Collectors.toList());
+		return las.retrieveAllLoanApplications().stream().filter(loanApp->loanApp.isLandVerificationApproval()==false).collect(Collectors.toList());
 	}
 	
 	

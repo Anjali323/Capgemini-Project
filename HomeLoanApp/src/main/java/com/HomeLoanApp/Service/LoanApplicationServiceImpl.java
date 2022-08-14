@@ -18,7 +18,7 @@ public class LoanApplicationServiceImpl implements ILoanApplicationService{
 	@Override
 	public LoanApplication deleteLoanApplicationById(long loanApplicationId) {
 		
-		List<LoanApplication> l1=retriveAllLoanApplications();
+		List<LoanApplication> l1=retrieveAllLoanApplications();
 		
 		for(LoanApplication l:l1) {
 			if(l.getApplicationId()==loanApplicationId) {
@@ -30,8 +30,15 @@ public class LoanApplicationServiceImpl implements ILoanApplicationService{
 	}
 
 	@Override
-	public LoanApplication retriveLoanApplicationById(long loanApplicationId) {
-		return ilr.findById(loanApplicationId).get();
+	public LoanApplication retrieveLoanApplicationById(long loanApplicationId) {
+		List<LoanApplication> l1=retrieveAllLoanApplications();
+		
+		for(LoanApplication l:l1) {
+			if(l.getApplicationId()==loanApplicationId) {
+				return l;
+			}
+		}
+		throw new EmptyInputException("206","Loan Application doesn't exist");
 	}
 
 	@Override
@@ -46,10 +53,11 @@ public class LoanApplicationServiceImpl implements ILoanApplicationService{
 	public LoanApplication updateLoanApplication(LoanApplication loanApplication) {
 		long id=loanApplication.getApplicationId();
 		
-		List<LoanApplication> l1=retriveAllLoanApplications();
+		List<LoanApplication> l1=retrieveAllLoanApplications();
 		
 		for(LoanApplication l:l1) {
 			if(l.getApplicationId()==id) {
+				loanApplication.setCustomerId(l.getCustomerId());
 				return ilr.save(loanApplication);
 			}
 		}
@@ -57,12 +65,47 @@ public class LoanApplicationServiceImpl implements ILoanApplicationService{
 	}
 
 	@Override
-	public List<LoanApplication> retriveAllLoanApplications() {
+	public List<LoanApplication> retrieveAllLoanApplications() {
 		return ilr.findAll();
 	}
 	
 	@Override
-	public List<LoanApplication> retriveLoanApplicationByStatus(Status status){
+	public List<LoanApplication> retrieveLoanApplicationByStatus(Status status){
 		return ilr.findByStatus(status);
+	}
+	
+	@Override
+	public LoanApplication getLoanApplicationWithCustId(int custId) {
+		List<LoanApplication> l1=retrieveAllLoanApplications();
+		
+		for(LoanApplication l:l1) {
+			if(l.getCustomerId()==custId) {
+				return l;
+			}
+		}
+		throw new EmptyInputException("206","Loan Application doesn't exist");
+	}
+	
+	@Override
+	public LoanApplication getLoanApplicationWithCustomerId(int custId) {
+		List<LoanApplication> l1=retrieveAllLoanApplications();
+		
+		for(LoanApplication l:l1) {
+			if(l.getCustomerId()==custId) {
+				return l;
+			}
+		}
+		return null;
+	}
+	
+	public LoanApplication getLoanApplicationById(long loanApplicationId) {
+		List<LoanApplication> l1=retrieveAllLoanApplications();
+		
+		for(LoanApplication l:l1) {
+			if(l.getApplicationId()==loanApplicationId) {
+				return l;
+			}
+		}
+		return null;
 	}
 }

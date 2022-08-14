@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.HomeLoanApp.Exception.EmptyInputException;
 import com.HomeLoanApp.Model.FinanceVerificationOfficer;
 import com.HomeLoanApp.Model.LoanApplication;
+import com.HomeLoanApp.Model.Status;
 import com.HomeLoanApp.dao.IFinanceVerificationRepository;
 
 @Service
@@ -44,19 +45,23 @@ public class FinanceVerificationOfficerServiceImpl implements IFinanceVerificati
 
 	@Override
 	public void updateStatus(LoanApplication loanApplication) {
-		List<LoanApplication> l1=las.retriveAllLoanApplications();
+		List<LoanApplication> l1=las.retrieveAllLoanApplications();
 		
 		for(LoanApplication l:l1) {
 			if(l.getApplicationId()==loanApplication.getApplicationId()) {
-				loanApplication.setFinanceVerificationApproval(true);
-				loanApplication.setCustomer(l.getCustomer());
-				las.updateLoanApplication(loanApplication);
+				if(loanApplication.isLandVerificationApproval()) {
+					loanApplication.setStatus(Status.PENDING);
+					las.updateLoanApplication(loanApplication);
+					return;
+				}
+				throw new EmptyInputException("222","Land verification officer approval pending");
 			}
 		}
+		throw new EmptyInputException("206","Loan Application doesn't exist");
 	}
 
 	@Override
 	public List<LoanApplication> getLoanApplicationByFinanceStatus() {
-		return las.retriveAllLoanApplications().stream().filter(loanApp->loanApp.isFinanceVerificationApproval()==false&&loanApp.isLandVerificationApproval()==true).collect(Collectors.toList());
+		return las.retrieveAllLoanApplications().stream().filter(loanApp->loanApp.isFinanceVerificationApproval()==false&&loanApp.isLandVerificationApproval()==true).collect(Collectors.toList());
 	}
 }

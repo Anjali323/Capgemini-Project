@@ -7,7 +7,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name="emi")
@@ -17,16 +19,20 @@ public class Emi {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="emi_id")
 	private Long emiId;
-	@Column(name="due_date")
+	@NotNull
+	@Column(name="due_date",nullable=false)
 	private LocalDate dueDate;
-	@Column(name="emi_amount")
+	@NotNull
+	@Column(name="emi_amount",nullable=false)
 	private double emiAmount;
-	@Column(name="loan_amount")
+	@NotNull
+	@Column(name="loan_amount",nullable=false)
 	private double loanAmount;
-	@Column(name="interest_amount")
+	@NotNull
+	@Column(name="interest_amount",nullable=false)
 	private double interestAmount;
-	@Column(name="loan_agreement_id")
-	private long loanAgreementId;
+	@OneToOne
+	private LoanAgreement loanAgreement;
 	
 	public Long getEmiId() {
 		return emiId;
@@ -58,17 +64,16 @@ public class Emi {
 	public void setInterestAmount(double interestAmount) {
 		this.interestAmount = interestAmount;
 	}
-	public long getLoanAgreementId() {
-		return loanAgreementId;
+	public LoanAgreement getLoanAgreement() {
+		return loanAgreement;
 	}
-	public void setLoanAgreementId(long loanAgreementId) {
-		this.loanAgreementId = loanAgreementId;
+	public void setLoanAgreement(LoanAgreement loanAgreement) {
+		this.loanAgreement = loanAgreement;
 	}
 	
 	@Override
 	public String toString() {
 		return "Emi [emiId=" + emiId + ", dueDate=" + dueDate + ", emiAmount=" + emiAmount + ", loanAmount="
-				+ loanAmount + ", interestAmount=" + interestAmount + ", loanAgreementId=" + loanAgreementId + "]";
+				+ loanAmount + ", interestAmount=" + interestAmount + ", loanAgreement=" + loanAgreement + "]";
 	}
-	
 }

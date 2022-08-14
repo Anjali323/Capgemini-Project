@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -15,8 +16,8 @@ public class LoanAgreement {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="loan_agreement_id")
 	private long loanAgreementId;
-	@Column(name="loan_application_id")
-	private long loanApplicationId;
+	@OneToOne
+	private LoanApplication loanApplication;
 	
 	public long getLoanAgreementId() {
 		return loanAgreementId;
@@ -24,15 +25,15 @@ public class LoanAgreement {
 	public void setLoanAgreementId(long loanAgreementId) {
 		this.loanAgreementId = loanAgreementId;
 	}
-	public long getLoanApplicationId() {
-		return loanApplicationId;
+	public LoanApplication getLoanApplication() {
+		return loanApplication;
 	}
-	public void setLoanApplicationId(long loanApplicationId) {
-		this.loanApplicationId = loanApplicationId;
+	public void setLoanApplication(LoanApplication loanApplication) {
+		this.loanApplication = loanApplication;
 	}
 	
 	@Override
 	public String toString() {
-		return "LoanAgreement [loanAgreementId=" + loanAgreementId + ", loanApplicationId=" + loanApplicationId + "]";
+		return "LoanAgreement [loanAgreementId=" + loanAgreementId + ", loanApplication=" + loanApplication + "]";
 	}
 }
