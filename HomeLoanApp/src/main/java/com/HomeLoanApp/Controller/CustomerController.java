@@ -44,6 +44,9 @@ public class CustomerController {
 	@GetMapping("getLoanApplication/{userId}")
 	public LoanApplication getApplication(@PathVariable("userId") int userId) {
 		if(usi.findUserWithId(userId).getRole().equalsIgnoreCase("customer")) {
+			if(ics.getCustomer(userId).getAadharNumber()==null) {
+				throw new EmptyInputException("233","The customer data is invalid");
+			}
 			return las.getLoanApplicationWithCustId(userId);
 		}
 		throw new EmptyInputException("220","This module will only be accessed by the customer");
@@ -52,6 +55,9 @@ public class CustomerController {
 	@GetMapping("getLoanAgreement/{userId}")
 	public LoanAgreement getAgreement(@PathVariable("userId") int userId) {
 		if(usi.findUserWithId(userId).getRole().equalsIgnoreCase("customer")) {
+			if(ics.getCustomer(userId).getAadharNumber()==null) {
+				throw new EmptyInputException("233","The customer data is invalid");
+			}
 			return lai.getLoanAgreementByCustomerId(userId);
 		}
 		throw new EmptyInputException("220","This module will only be accessed by the customer");
@@ -60,6 +66,9 @@ public class CustomerController {
 	@GetMapping("getEmiDetails/{userId}")
 	public Emi getEmi(@PathVariable("userId") int userId) {
 		if(usi.findUserWithId(userId).getRole().equalsIgnoreCase("customer")) {
+			if(ics.getCustomer(userId).getAadharNumber()==null) {
+				throw new EmptyInputException("233","The customer data is invalid");
+			}
 			if(lai.getLoanAgreementByCustId(userId)!=null) {
 				return esi.getEmi(lai.getLoanAgreementByCustomerId(userId).getLoanAgreementId());
 			}
@@ -73,6 +82,9 @@ public class CustomerController {
 			if(loanApplication.isAdminApproval()||loanApplication.isFinanceVerificationApproval()||loanApplication.isLandVerificationApproval()) {
 				throw new EmptyInputException("207","This application can only be updated by the admin");
 			}
+			if(ics.getCustomer(userId).getAadharNumber()==null) {
+				throw new EmptyInputException("233","The customer data is invalid");
+			}
 			return las.updateLoanApplication(loanApplication);
 		}
 		throw new EmptyInputException("220","This module will only be accessed by the customer");
@@ -81,6 +93,9 @@ public class CustomerController {
 	@PutMapping("updateCustomer/{userId}")
 	public Customer updateCustomer(@Valid @RequestBody Customer customer,@PathVariable("userId") int userId) {
 		if(usi.findUserWithId(userId).getRole().equalsIgnoreCase("customer")) {
+			if(ics.getCustomer(userId).getAadharNumber()==null) {
+				throw new EmptyInputException("233","The customer data is invalid");
+			}
 			customer.setUser(usi.findUserWithId(userId));
 			return ics.updateCustomer(customer);
 		}
@@ -90,6 +105,9 @@ public class CustomerController {
 	@DeleteMapping("deleteCustomer/{userId}")
 	public String deleteCustomer(@PathVariable("userId") int userId) {
 		if(usi.findUserWithId(userId).getRole().equalsIgnoreCase("customer")) {
+			if(ics.getCustomer(userId).getAadharNumber()==null) {
+				throw new EmptyInputException("233","The customer data is invalid");
+			}
 			ics.deleteCustomer(ics.viewCustomer(userId));
 			return "Deleted Successfully";
 		}

@@ -1,15 +1,14 @@
 package com.HomeLoanApp.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.HomeLoanApp.Model.Status;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.HomeLoanApp.Exception.EmptyInputException;
 import com.HomeLoanApp.Model.LoanApplication;
+import com.HomeLoanApp.Model.Status;
 import com.HomeLoanApp.dao.ILoanApplicationRepository;
 
 @Service

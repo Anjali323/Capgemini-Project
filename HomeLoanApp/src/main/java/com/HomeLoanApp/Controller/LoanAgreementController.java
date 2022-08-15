@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.HomeLoanApp.Exception.EmptyInputException;
 import com.HomeLoanApp.Model.LoanAgreement;
+import com.HomeLoanApp.Service.AdminServiceImpl;
 import com.HomeLoanApp.Service.LoanAgreementServiceImpl;
 import com.HomeLoanApp.Service.LoanApplicationServiceImpl;
 import com.HomeLoanApp.Service.UserServiceImpl;
@@ -30,9 +31,13 @@ public class LoanAgreementController {
 	@Autowired
 	private LoanApplicationServiceImpl lai;
 	
+	@Autowired
+	private AdminServiceImpl asi;
+	
 	@PostMapping("addAgreement/{userId}/{applicationId}")
 	public LoanAgreement addLoanAgreement(@PathVariable("userId") int userId,@PathVariable("applicationId") long applicationId) {
 		if(usi.findUserWithId(userId).getRole().equalsIgnoreCase("admin")) {
+			asi.getAdmin(userId);
 			if(applicationId==0) {
 				throw new EmptyInputException("200","Wrong input");
 			}
@@ -49,6 +54,7 @@ public class LoanAgreementController {
 	@PutMapping("updateAgreement/{userId}/{agreementId}/{applicationId}")
 	public LoanAgreement updateLoanAgreement(@PathVariable("userId") int userId,@PathVariable("agreementId") long agreementId,@PathVariable("applicationId") long applicationId) {
 		if(usi.findUserWithId(userId).getRole().equalsIgnoreCase("admin")) {
+			asi.getAdmin(userId);
 			if(applicationId==0) {
 				throw new EmptyInputException("200","Wrong input");
 			}
@@ -63,6 +69,7 @@ public class LoanAgreementController {
 	@DeleteMapping("deleteAgreement/{userId}/{agreementId}")
 	public String deleteLoanAgreement(@PathVariable("userId") int userId,@PathVariable("agreementId") long agreementId) {
 		if(usi.findUserWithId(userId).getRole().equalsIgnoreCase("admin")) {
+			asi.getAdmin(userId);
 			if(las.deleteLoanAgreement(las.retrieveLoanAgreementById(agreementId))==null) {
 				return "Deleted Successfully";
 			}
@@ -73,6 +80,7 @@ public class LoanAgreementController {
 	@GetMapping("getAllLoanAgreement/{userId}")
 	public List<LoanAgreement> getAllLoanApplication(@PathVariable("userId") int userId){
 		if(usi.findUserWithId(userId).getRole().equalsIgnoreCase("admin")) {
+			asi.getAdmin(userId);
 			return las.retrieveAllLoanAgreement();
 		}
 		throw new EmptyInputException("214","This feature is only accessible to the Admin");
@@ -81,6 +89,7 @@ public class LoanAgreementController {
 	@GetMapping("getLoanAgreement/{userId}/{agreementId}")
 	public LoanAgreement getLoanAgreement(@PathVariable("userId") int userId,@PathVariable("agreementId") long agreementId) {
 		if(usi.findUserWithId(userId).getRole().equalsIgnoreCase("admin")) {
+			asi.getAdmin(userId);
 			return las.retrieveLoanAgreementById(agreementId);
 		}
 		throw new EmptyInputException("214","This feature is only accessible to the Admin");

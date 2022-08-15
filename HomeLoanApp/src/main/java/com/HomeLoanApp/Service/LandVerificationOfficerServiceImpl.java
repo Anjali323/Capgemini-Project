@@ -63,5 +63,16 @@ public class LandVerificationOfficerServiceImpl implements ILandVerificationOffi
 		return las.retrieveAllLoanApplications().stream().filter(loanApp->loanApp.isLandVerificationApproval()==false).collect(Collectors.toList());
 	}
 	
+	public LandVerificationOfficer getLandOfficer(long landId) {
+		List<LandVerificationOfficer> l1=getAllLand();
+		
+		for(LandVerificationOfficer lv:l1) {
+			if(lv.getUser().getUserId()==landId) {
+				return lv;
+			}
+		}
+		throw new EmptyInputException("235","The Land officer doesn't exist");
+	}
+	
 	
 }

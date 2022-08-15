@@ -19,13 +19,14 @@ public class Admin{
 	
 	@NotNull(message="The value should not be null")
 	@Length(min=2,max=120)
+	@Pattern(regexp="^[A-Za-z]*$",message="Should be only characters")
 	@Column(name="admin_name",nullable=false)
 	private String adminName;
 	
 	@Id
 	@NotNull(message="The value should not be null")
 	@Length(min=10,max=10,message="The Length should be exactly 10 digits")
-	@Pattern(regexp="(^$|[0-9]{10})",message="Please Enter Numerical digits only")
+	@Pattern(regexp="[0-9]+",message="Please Enter Numerical digits only")
 	@Column(name="admin_contact",unique=true)
 	private String adminContact;
 	

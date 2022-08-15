@@ -26,7 +26,7 @@ public class LandVerificationOfficer{
 	@Id
 	@NotNull(message="The value should not be null")
 	@Length(min=10,max=10,message="The Length should be exactly 10 digits")
-	@Pattern(regexp="(^$|[0-9]{10})",message="Please Enter Numerical digits only")
+	@Pattern(regexp="[0-9]+",message="Please Enter Numerical digits only")
 	@Column(name="officer_contact",unique=true)
 	private String officerContact;
 	

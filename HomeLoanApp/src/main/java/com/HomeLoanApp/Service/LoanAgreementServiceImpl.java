@@ -34,9 +34,10 @@ public class LoanAgreementServiceImpl implements ILoanAgreementService{
 	@Override
 	public LoanAgreement retrieveLoanAgreementById(long loanAgreementId) {
 		List<LoanAgreement> l1=retrieveAllLoanAgreement();
-		
+		System.out.println("LoanAgreemntId: "+loanAgreementId);
 		for(LoanAgreement l:l1) {
 			if(l.getLoanAgreementId()==loanAgreementId) {
+				System.out.println("IN!!!!!");
 				return l;
 			}
 		}

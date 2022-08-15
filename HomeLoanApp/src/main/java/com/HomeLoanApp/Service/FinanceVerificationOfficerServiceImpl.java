@@ -64,4 +64,15 @@ public class FinanceVerificationOfficerServiceImpl implements IFinanceVerificati
 	public List<LoanApplication> getLoanApplicationByFinanceStatus() {
 		return las.retrieveAllLoanApplications().stream().filter(loanApp->loanApp.isFinanceVerificationApproval()==false&&loanApp.isLandVerificationApproval()==true).collect(Collectors.toList());
 	}
+	
+	public FinanceVerificationOfficer getFinance(long financeId) {
+		List<FinanceVerificationOfficer>l1=getAllFinance();
+		
+		for(FinanceVerificationOfficer f1:l1) {
+			if(f1.getUser().getUserId()==financeId) {
+				return f1;
+			}
+		}
+		throw new EmptyInputException("236","The Finance officer doesn't exist");
+	}
 }

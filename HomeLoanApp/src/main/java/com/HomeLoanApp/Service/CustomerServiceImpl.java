@@ -95,5 +95,16 @@ public class CustomerServiceImpl implements ICustomerService{
 		}
 		return viewAllCustomers().stream().filter(customer->customer.getDateOfBirth().equals(dateOfApplication)).collect(Collectors.toList());
 	}
+	
+	public Customer getCustomer(int custid) {
+		List<Customer> l1=viewAllCustomers();
+		
+		for(Customer c:l1) {
+			if(c.getUser().getUserId()==custid) {
+				return c;
+			}
+		}
+		return new Customer();
+	}
 
 }

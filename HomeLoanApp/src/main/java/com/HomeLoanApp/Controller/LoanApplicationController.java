@@ -16,6 +16,7 @@ import com.HomeLoanApp.Exception.EmptyInputException;
 import com.HomeLoanApp.Model.LoanApplication;
 import com.HomeLoanApp.Model.Status;
 import com.HomeLoanApp.Model.User;
+import com.HomeLoanApp.Service.AdminServiceImpl;
 import com.HomeLoanApp.Service.CustomerServiceImpl;
 import com.HomeLoanApp.Service.FinanceVerificationOfficerServiceImpl;
 import com.HomeLoanApp.Service.LandVerificationOfficerServiceImpl;
@@ -41,11 +42,15 @@ public class LoanApplicationController {
 	@Autowired
 	private CustomerServiceImpl csi;
 	
+	@Autowired
+	private AdminServiceImpl asi;
+	
 	
 	@GetMapping("getAllLoanApplicationByStatusAdmin/{userId}")
 	public List<LoanApplication> getLoanApplicationByStatus(@RequestParam Status status,@PathVariable("userId") int userId){
 		User u=usi.findUserWithId(userId);
 		if(u.getRole().equalsIgnoreCase("admin")) {
+			asi.getAdmin(userId);
 			return las.retrieveLoanApplicationByStatus(status);
 		}
 		throw new EmptyInputException("214","This feature is only accessible to the Admin");
@@ -55,6 +60,7 @@ public class LoanApplicationController {
 	public LoanApplication addLoanApplication(@Valid @RequestBody LoanApplication loanapp,@PathVariable("adminId") int adminId,@PathVariable("customerId") int customerId) {
 		User u=usi.findUserWithId(adminId);
 		if(u.getRole().equalsIgnoreCase("admin")) {
+			asi.getAdmin(adminId);
 			csi.viewCustomer(customerId);
 			if(loanapp.isAdminApproval()||loanapp.isFinanceVerificationApproval()||loanapp.isLandVerificationApproval()) {
 				throw new EmptyInputException("207","This application can only be updated by the admin");
@@ -73,6 +79,7 @@ public class LoanApplicationController {
 	public LoanApplication updateLoanApplication(@PathVariable("userId") int userId,@RequestParam Status status,@PathVariable("loanApplicationId") long loanApplicationId) {
 		User u=usi.findUserWithId(userId);
 		if(u.getRole().equalsIgnoreCase("admin")) {
+			asi.getAdmin(userId);
 			LoanApplication loanapp=las.retrieveLoanApplicationById(loanApplicationId);
 			if(loanapp.isLandVerificationApproval()) {
 				if(loanapp.isFinanceVerificationApproval()) {
@@ -96,6 +103,7 @@ public class LoanApplicationController {
 	public String deleteLoanApplication(@PathVariable("userId") int userId,@PathVariable("loanApplicationId") long loanApplicationId) {
 		User u=usi.findUserWithId(userId);
 		if(u.getRole().equalsIgnoreCase("admin")) {
+			asi.getAdmin(userId);
 			las.deleteLoanApplicationById(loanApplicationId);
 			return "Deleted Successfully";
 		}
@@ -106,6 +114,7 @@ public class LoanApplicationController {
 	public List<LoanApplication> getLoanApplicationByLandStatus(@PathVariable("userId") int userId){
 		User u=usi.findUserWithId(userId);
 		if(u.getRole().equalsIgnoreCase("landverificationofficer")) {
+			lvs.getLandOfficer(userId);
 			return lvs.getLoanApplicationByStatus();
 		}
 		throw new EmptyInputException("211","This feature is only accessible to the Land verification officer");
@@ -115,6 +124,7 @@ public class LoanApplicationController {
 	public String updateLoanApplicationLand(@RequestParam boolean status,@PathVariable("userId") int userId,@PathVariable("loanApplicationId") int loanApplicationId) {
 		User u=usi.findUserWithId(userId);
 		if(u.getRole().equalsIgnoreCase("landverificationofficer")) {
+			lvs.getLandOfficer(userId);
 			LoanApplication loanApp=las.retrieveLoanApplicationById(loanApplicationId);
 			if(loanApp.isFinanceVerificationApproval()&&loanApp.isLandVerificationApproval()) {
 				throw new EmptyInputException("227","The Application is already passed to the Finance verification officer");
@@ -130,6 +140,7 @@ public class LoanApplicationController {
 	public List<LoanApplication> getLoanApplicationByFinanceStatus(@PathVariable("userId") int userId){
 		User u=usi.findUserWithId(userId);
 		if(u.getRole().equalsIgnoreCase("financeverificationofficer")) {
+			fvs.getFinance(userId);
 			return fvs.getLoanApplicationByFinanceStatus();
 		}
 		throw new EmptyInputException("212","This feature is only accessible to the Finance verification officer");
@@ -139,6 +150,7 @@ public class LoanApplicationController {
 	public String updateLoanApplicationFinance(@RequestParam boolean status,@PathVariable("userId") int userId,@PathVariable("loanApplicationId") long loanApplicationId) {
 		User u=usi.findUserWithId(userId);
 		if(u.getRole().equalsIgnoreCase("financeverificationofficer")) {
+			fvs.getFinance(userId);
 			LoanApplication loanApp=las.retrieveLoanApplicationById(loanApplicationId);
 			if(loanApp.isFinanceVerificationApproval()&&loanApp.isAdminApproval()) {
 				throw new EmptyInputException("227","The Application is already passed to the Admin");
@@ -159,6 +171,9 @@ public class LoanApplicationController {
 			}
 			if(las.getLoanApplicationWithCustomerId(userId)!=null) {
 				throw new EmptyInputException("223","The application for the customer is already exists");
+			}
+			if(csi.getCustomer(userId).getAadharNumber()==null) {
+				throw new EmptyInputException("233","The customer data is invalid");
 			}
 			loanApp.setCustomerId(userId);
 			loanApp.setStatus(Status.WAITING_FOR_LAND_VERIFICATION_OFFICE_APPROVAL);

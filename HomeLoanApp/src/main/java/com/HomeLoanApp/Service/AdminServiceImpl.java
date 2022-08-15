@@ -37,4 +37,16 @@ public class AdminServiceImpl implements IAdminService{
 		return iar.findAll();
 	}
 	
+	public Admin getAdmin(int adminId) {
+		List<Admin> l1=getAllAdmin();
+		
+		for(Admin a1:l1) {
+			if(a1.getUser().getUserId()==adminId) {
+				return a1;
+			}
+		}
+		
+		throw new EmptyInputException("234","Admin doesn't exist");
+	}
+	
 }

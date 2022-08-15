@@ -29,7 +29,7 @@ public class Customer{
 	
 	@NotNull(message="The value should not be null")
 	@Length(min=10,max=10,message="The Length should be exactly 10 digits")
-	@Pattern(regexp="(^$|[0-9]{10})",message="Please Enter Numerical digits only")
+	@Pattern(regexp="[0-9]+",message="Please Enter Numerical digits only")
 	@Column(name="mobile_number",unique=true)
 	private String mobileNumber;
 	
@@ -58,15 +58,15 @@ public class Customer{
 	@Id
 	@NotNull(message="The value should not be null")
 	@NotBlank
-	@Length(min=12,max=12)
+	@Length(min=12,max=12,message="Length should be exactly 12 Digits")
 	@Pattern(regexp="[0-9]+",message="Please Enter Numerical digits only")
 	@Column(name="aadhar_number",unique=true)
 	private String aadharNumber;
 	
 	@NotNull(message="The value should not be null")
 	@NotBlank
-	@Length(min=10,max=10)
-	@Pattern(regexp="^[A-Z0-9]*$",message="Please Enter Numerical digits only")
+	@Length(min=10,max=10,message="Length should be exactly 10 Alpha-Numerical characters")
+	@Pattern(regexp="^[A-Z0-9]*$",message="Please Enter Alpha-Numerical values only")
 	@Column(name="pan_number",unique=true)
 	private String panNumber;
 	

@@ -24,12 +24,13 @@ public class LoanTrackerController {
 	@Autowired
 	private UserServiceImpl usi;
 	
-	@GetMapping("track/{userId}/{applicationId}")
-	public Status loanTracker(@PathVariable("userId") int userId,@PathVariable("applicationId") long applicationId) {
-		if(usi.findUserWithId(userId)!=null) {
-			return las.retrieveLoanApplicationById(applicationId).getStatus();
+	@GetMapping("trackStatus/{userId}")
+	public Status loanTracker(@PathVariable("userId") int userId) {
+		usi.findUserWithId(userId);
+		if(las.getLoanApplicationWithCustId(userId)!=null) {
+			return las.getLoanApplicationWithCustId(userId).getStatus();
 		}
-		throw new EmptyInputException("202","user Id doesn't exist");
+		throw new EmptyInputException("237","Customer doesn't have Loan Application");
 	}
 	
 	@GetMapping("track/{userId}")
